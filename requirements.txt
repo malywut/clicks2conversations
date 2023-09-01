@@ -1,2 +1,5 @@
 python-dotenv
 openai
+langchain==0.0.187
+fire
+gradio
