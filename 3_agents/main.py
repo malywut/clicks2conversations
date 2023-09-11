@@ -5,14 +5,21 @@ from fire import Fire
 
 from langchain_utils import create_agent
 
+agent = None
 
 def run_gui():
     with gr.Blocks() as demo:
         chatbot = gr.Chatbot()
         msg = gr.Textbox()
-        # clear = gr.ClearButton([msg, chatbot])
-
+        clearButton = gr.ClearButton([msg, chatbot])
+        global agent
         agent = create_agent()
+
+        def clear():
+            global agent
+            agent = create_agent()
+
+        clearButton.click(fn= clear)
 
         def user(user_message, history):
             return gr.update(value="", interactive=False), history + [[user_message, None]]

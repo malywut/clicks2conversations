@@ -62,7 +62,7 @@ tools.extend([
         name="UPDATE_REGISTRATION",
         description="Use to update a registration. Human must have confirmed arguments before use. Outputs true if the update succeeded, else false. The output needs to be used to answer the question.",
     ),
-    StructuredTool.from_function(
+    Tool.from_function(
         func=delete_registration_tool,
         name="DELETE_REGISTRATION",
         description="Use to delete a registration. Human must have confirmed arguments before use. Outputs false if the update succeeded, else false. The output needs to be used to answer the question.",
