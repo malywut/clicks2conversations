@@ -67,20 +67,6 @@ def reset():
     print("Assistant:", starting_question)
 
 
-def generate_response(self, facts, user_question):
-    # Call the openai ChatCompletion endpoint
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user",
-             "content": f"""Based on the FACTS, answer the QUESTION.
-    QUESTION: {user_question}. FACTS: {facts}"""}
-        ]
-    )
-    # Extract the response
-    return (response['choices'][0]['message']['content'])
-
-
 def main():
     print("Welcome to the Immatriculatuion Chat System")
     print("Type 'exit' to end the conversation.")
@@ -88,11 +74,13 @@ def main():
     while True:
         # Print in green states
         print("\033[92m" + ai_current_state + "\033[0m")
+
         user_input = input("You: ")
         if user_input.lower() == 'exit':
             print("Assistant: Goodbye!")
             break
         print("\033[92m" + ai_current_state + "\033[0m")
+        
         response = get_response(user_input)
         print("Assistant:", response)
         if (ai_current_state.startswith("ACTION")):
