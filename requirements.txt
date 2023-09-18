@@ -3,3 +3,4 @@ openai
 langchain==0.0.187
 fire
 gradio
+tiktoken

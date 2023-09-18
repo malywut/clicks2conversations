@@ -7,7 +7,7 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain.tools import Tool, StructuredTool
 from langchain.chains import ConversationChain
 from langchain.output_parsers.retry import RetryOutputParser
-from dotenv import load_dotenv, get_key
+from dotenv import load_dotenv, get_key, set_key
 
 import openai
 load_dotenv(dotenv_path="../.env")
@@ -111,7 +111,7 @@ Question: {input}
         input_variables=["input", "chat_history", "agent_scratchpad"],
     )
     memory = ConversationBufferMemory(memory_key="chat_history")
-    azure_openai_chat = AzureChatOpenAI(deployment_name=deployment_id)
+    azure_openai_chat = AzureChatOpenAI(deployment_name=get_key(dotenv_path="../.env", key_to_get="OPENAI_DEPLOYMENT"))
     llm_chain = LLMChain(llm=azure_openai_chat, prompt=prompt)
     agent = ZeroShotAgent(
         llm_chain=llm_chain, tools=tools, verbose=True,

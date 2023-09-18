@@ -85,7 +85,7 @@ def reset():
 
 
 def main():
-    print("Welcome to the Immatriculatuion Chat System")
+    print("Welcome to the Vehicle Registration Chat System")
     print("Type 'exit' to end the conversation.")
     reset()
     while True:
