@@ -18,11 +18,11 @@ tools = []
 
 
 def simple_conversation(input: str):
-    return "Stop and the Give a final answer as best as you can. Final answer can be a question to the human."
+    return "Stop and the give the Final Answer as best as you can. Final Answer can be a question to the human."
 
 
 class RegistrationInput(BaseModel):
-    make: str = Field(description="Vehicule make, required")
+    model: str = Field(description="Vehicule model, required")
     year: int = Field(description="Car year, required")
     owner_name: str = Field(description="Car owner name, required")
 
@@ -34,7 +34,7 @@ def create_registration_tool(input: RegistrationInput):
 
 
 def update_registration_tool(
-        registration_number: str, brand: str = None, year: int = None,
+        registration_number: str, model: str = None, year: int = None,
         owner_name: str = None):
     # TODO update car registration
     return True
@@ -54,7 +54,7 @@ tools.extend([
     Tool.from_function(
         func=create_registration_tool,
         name="CREATE_REGISTRATION",
-        description="Use to create a registration. Required arguments: make, year, owner_name. Before use, output all arguments to the user and ask for confirmation. All arguments are mandatory. Outputs a registration number. The output needs to be used to answer the question.",
+        description="Use to create a registration. Required arguments: model, year, owner_name. Before use, output all arguments to the user and ask for confirmation. All arguments are mandatory. Outputs a registration number. The output needs to be used to answer the question.",
         # args_schema=RegistrationInput,
     ),
     Tool.from_function(
@@ -117,5 +117,5 @@ Question: {input}
         llm_chain=llm_chain, tools=tools, verbose=True,
         handle_parsing_errors=True, memory=memory)
     agent_chain = AgentExecutor.from_agent_and_tools(
-        agent=agent, tools=tools, verbose=True, memory=memory, handle_parsing_errors=True)
+        agent=agent, tools=tools, verbose=True, memory=memory, handle_parsing_errors=True, )
     return agent_chain
