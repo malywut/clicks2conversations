@@ -1,4 +1,3 @@
-import openai
 from typing import List
 
 from dotenv import load_dotenv, get_key
@@ -13,9 +12,9 @@ openai.api_version = get_key(
 
 
 def generate(messages):
-    response = openai.ChatCompletion.create(
-        deployment_id=get_key(dotenv_path="../.env",
-                              key_to_get="OPENAI_DEPLOYMENT"),
+    client = openai.OpenAI()
+    response =  client.chat.completions.create(
+        model=get_key(dotenv_path="../.env", key_to_get="OPENAI_MODEL"),
         # Conversation as a list of messages.
         messages=messages,
         max_tokens=100)

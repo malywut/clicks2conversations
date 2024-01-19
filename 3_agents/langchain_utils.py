@@ -13,6 +13,7 @@ import openai
 load_dotenv(dotenv_path="../.env")
 
 deployment_id = get_key(dotenv_path="../.env", key_to_get="OPENAI_DEPLOYMENT")
+model = get_key(dotenv_path="../.env", key_to_get="OPENAI_MODEL")
 
 tools = []
 
@@ -111,7 +112,7 @@ Question: {input}
         input_variables=["input", "chat_history", "agent_scratchpad"],
     )
     memory = ConversationBufferMemory(memory_key="chat_history")
-    azure_openai_chat = AzureChatOpenAI(deployment_name=get_key(dotenv_path="../.env", key_to_get="OPENAI_DEPLOYMENT"))
+    azure_openai_chat = AzureChatOpenAI(deployment_name=deployment_id, model_name=model)
     llm_chain = LLMChain(llm=azure_openai_chat, prompt=prompt)
     agent = ZeroShotAgent(
         llm_chain=llm_chain, tools=tools, verbose=True,
