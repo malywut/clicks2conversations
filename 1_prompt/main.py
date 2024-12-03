@@ -16,9 +16,9 @@ All your answers must be a json with three fields, OUTPUT, FUNCTION and ARGS. Ex
  }}
 Outputs will be outputed to the user. 
 Possible functions are CREATE_REGISTRATION, UPDATE_REGISTRATION, DELETE_REGISTRATION
-Possible ARGS are model; owner_name, year.
+Possible ARGS are make; owner_name, year.
 The user can ask for a new registration, update information on an existing registration, delete an registration.
-To create a new registration, the user must provide a model, the year it was created, and the owner's name.
+To create a new registration, the user must provide a make, the year it was created, and the owner's name.
 To update an registration, the user must provide the registration number, and the new information. 
 To delete and registration, the user must provide an registration number.
 The user must provide explicit confirmation before fulfilling the request.

@@ -1,20 +1,15 @@
 from pydantic import BaseModel, Field
-from langchain.agents import AgentExecutor, Tool, ZeroShotAgent, load_tools, AgentType, initialize_agent
+from langchain.agents import AgentExecutor, Tool, ZeroShotAgent
 from langchain.chains import LLMChain
-from langchain.chat_models import AzureChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
-from langchain.tools import Tool, StructuredTool
-from langchain.chains import ConversationChain
-from langchain.output_parsers.retry import RetryOutputParser
+from langchain.tools import Tool
 from dotenv import load_dotenv, get_key, set_key
 
 import openai
 load_dotenv(dotenv_path="../.env")
-
-deployment_id = get_key(dotenv_path="../.env", key_to_get="OPENAI_DEPLOYMENT")
 model = get_key(dotenv_path="../.env", key_to_get="OPENAI_MODEL")
-
+api_key = get_key(dotenv_path="../.env", key_to_get="OPENAI_API_KEY")
 tools = []
 
 
@@ -23,7 +18,7 @@ def simple_conversation(input: str):
 
 
 class RegistrationInput(BaseModel):
-    model: str = Field(description="Vehicule model, required")
+    make: str = Field(description="Car make, required")
     year: int = Field(description="Car year, required")
     owner_name: str = Field(description="Car owner name, required")
 
@@ -35,7 +30,7 @@ def create_registration_tool(input: RegistrationInput):
 
 
 def update_registration_tool(
-        registration_number: str, model: str = None, year: int = None,
+        registration_number: str, make: str = None, year: int = None,
         owner_name: str = None):
     # TODO update car registration
     return True
@@ -55,7 +50,7 @@ tools.extend([
     Tool.from_function(
         func=create_registration_tool,
         name="CREATE_REGISTRATION",
-        description="Use to create a registration. Required arguments: model, year, owner_name. Before use, output all arguments to the user and ask for confirmation. All arguments are mandatory. Outputs a registration number. The output needs to be used to answer the question.",
+        description="Use to create a registration. Required arguments: make, year, owner_name. Before use, output all arguments to the user and ask for confirmation. All arguments are mandatory. Outputs a registration number. The output needs to be used to answer the question.",
         # args_schema=RegistrationInput,
     ),
     Tool.from_function(
@@ -112,8 +107,8 @@ Question: {input}
         input_variables=["input", "chat_history", "agent_scratchpad"],
     )
     memory = ConversationBufferMemory(memory_key="chat_history")
-    azure_openai_chat = AzureChatOpenAI(deployment_name=deployment_id, model_name=model)
-    llm_chain = LLMChain(llm=azure_openai_chat, prompt=prompt)
+    openai_chat = ChatOpenAI(api_key=api_key, model=model)
+    llm_chain = LLMChain(llm=openai_chat, prompt=prompt)
     agent = ZeroShotAgent(
         llm_chain=llm_chain, tools=tools, verbose=True,
         handle_parsing_errors=True, memory=memory)

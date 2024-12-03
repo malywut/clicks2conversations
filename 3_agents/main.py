@@ -30,14 +30,13 @@ def run_gui():
 
         def bot(history):
             with get_openai_callback() as cb:
-                bot_message = f"```\n{agent.run(history[-1][0])}\n ```"
+                bot_message = f"```\n{agent.invoke(history[-1][0])['output']}\n ```"
 
                 # Write model usage in csv format to file
-
                 with open("../monitoring.csv", "a") as f:
-                    # get from environment variables
+                    # get model from environment variable, not available in callback
                     f.write(
-                        f'"{int(time.time())}",{os.environ.get("MODEL")},"solution_3","{cb.prompt_tokens}","{cb.completion_tokens}"\n')
+                        f'"{int(time.time())}",{os.environ.get("OPENAI_MODEL")},"solution_3","{cb.prompt_tokens}","{cb.completion_tokens}"\n')
 
             history[-1][1] = ""
             for character in bot_message:

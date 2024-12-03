@@ -1,6 +1,7 @@
 python-dotenv
 openai
-langchain==0.0.187
+langchain
+langchain-openai
 fire
 gradio
 tiktoken
